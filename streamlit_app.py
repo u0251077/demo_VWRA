@@ -21,10 +21,10 @@ st.title("平均成本計算器")
 st.write("計算從上市開始到今天，每天都買進的平均成本，以及當前條件下買入更多股票以控制平均成本的最大股數。")
 
 # 輸入欄位
-current_shares = st.number_input("現有股數", value=590)
-current_avg_price = st.number_input("現有均價", value=100.344)
+current_shares = st.number_input("現有股數", value=1)
+current_avg_price = st.number_input("現有均價", value=100)
 new_price = st.number_input("當前每股價格", value=130.0)
-target_avg_price = st.number_input("目標均價", value=100.81)
+target_avg_price = st.number_input("目標均價", value=110)
 
 if st.button("計算"):
     max_additional_shares, new_avg_price = calculate_average_cost(current_shares, current_avg_price, new_price, target_avg_price)
