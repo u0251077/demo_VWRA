@@ -104,3 +104,4 @@ if st.button("顯示圖表"):
                     scales: {{
                         x: {{
                             &#8203;:citation[oaicite:0]{index=0}&#8203;
+'''
