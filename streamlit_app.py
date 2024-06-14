@@ -65,7 +65,7 @@ if st.button("顯示圖表"):
     
     # 用Chart.js 繪製圖表
     chart_data = stock_data.reset_index().to_json(orient='records')
-    st.markdown(f'''
+    st.markdown('''
         <canvas id="myChart"></canvas>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
