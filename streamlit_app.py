@@ -85,7 +85,7 @@ if st.button("顯示圖表"):
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1,
                 fill: false
-            }}''');
+            }});
             
             {"datasets.push({label: 'Average Cost', data: chartData.map(function(e) { return e.Average_Cost; }), borderColor: 'rgba(153, 102, 255, 1)', borderWidth: 1, fill: false});" if show_average_cost else ""}
             {"datasets.push({label: '720 MA', data: chartData.map(function(e) { return e['720_MA']; }), borderColor: 'rgba(255, 159, 64, 1)', borderWidth: 1, fill: false});" if show_720ma else ""}
@@ -104,3 +104,4 @@ if st.button("顯示圖表"):
                     scales: {{
                         x: {{
                             &#8203;:citation[oaicite:0]{index=0}&#8203;
+''')
