@@ -5,7 +5,7 @@ import altair as alt
 
 # 獲取股票數據的函數
 def get_stock_data(ticker, show_average_cost, show_720ma, show_360ma, show_180ma, show_30ma):
-    stock_data = yf.download(ticker, period="max")
+    stock_data = yf.download(ticker, period="max", progress=False)
     stock_data = stock_data.sort_index()
     
     if show_average_cost:
