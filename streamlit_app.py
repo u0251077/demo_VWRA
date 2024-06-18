@@ -87,11 +87,11 @@ if st.button("顯示圖表"):
                 fill: false
             }});
             
-            {"datasets.push({label: 'Average Cost', data: chartData.map(function(e) { return e.Average_Cost; }), borderColor: 'rgba(153, 102, 255, 1)', borderWidth: 1, fill: false});" if show_average_cost else ""}
-            {"datasets.push({label: '720 MA', data: chartData.map(function(e) { return e['720_MA']; }), borderColor: 'rgba(255, 159, 64, 1)', borderWidth: 1, fill: false});" if show_720ma else ""}
-            {"datasets.push({label: '240 MA', data: chartData.map(function(e) { return e['240_MA']; }), borderColor: 'rgba(255, 205, 86, 1)', borderWidth: 1, fill: false});" if show_360ma else ""}
-            {"datasets.push({label: '120 MA', data: chartData.map(function(e) { return e['120_MA']; }), borderColor: 'rgba(201, 203, 207, 1)', borderWidth: 1, fill: false});" if show_180ma else ""}
-            {"datasets.push({label: '20 MA', data: chartData.map(function(e) { return e['20_MA']; }), borderColor: 'rgba(54, 162, 235, 1)', borderWidth: 1, fill: false});" if show_30ma else ""}
+            {"datasets.push({{label: 'Average Cost', data: chartData.map(function(e) {{ return e.Average_Cost; }}), borderColor: 'rgba(153, 102, 255, 1)', borderWidth: 1, fill: false}});" if show_average_cost else ""}
+            {"datasets.push({{label: '720 MA', data: chartData.map(function(e) {{ return e['720_MA']; }}), borderColor: 'rgba(255, 159, 64, 1)', borderWidth: 1, fill: false}});" if show_720ma else ""}
+            {"datasets.push({{label: '240 MA', data: chartData.map(function(e) {{ return e['240_MA']; }}), borderColor: 'rgba(255, 205, 86, 1)', borderWidth: 1, fill: false}});" if show_360ma else ""}
+            {"datasets.push({{label: '120 MA', data: chartData.map(function(e) {{ return e['120_MA']; }}), borderColor: 'rgba(201, 203, 207, 1)', borderWidth: 1, fill: false}});" if show_180ma else ""}
+            {"datasets.push({{label: '20 MA', data: chartData.map(function(e) {{ return e['20_MA']; }}), borderColor: 'rgba(54, 162, 235, 1)', borderWidth: 1, fill: false}});" if show_30ma else ""}
             
             var myChart = new Chart(ctx, {{
                 type: 'line',
@@ -113,6 +113,4 @@ if st.button("顯示圖表"):
             }});
         </script>
     ''')
-                            x: {{
-                                &#8203;:citation[oaicite:0]{index=0}&#8203;
-    ''')
+
