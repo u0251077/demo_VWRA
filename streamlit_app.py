@@ -1,6 +1,7 @@
 import streamlit as st
 import yfinance as yf
 import pandas as pd
+import altair as alt
 
 # 獲取股票數據的函數
 def get_stock_data(ticker, show_average_cost, show_720ma, show_360ma, show_180ma, show_30ma):
@@ -38,7 +39,7 @@ show_720ma = st.checkbox('顯示720日移動平均線', value=True)
 
 if st.button("顯示圖表"):
     stock_data = get_stock_data(ticker, show_average_cost, show_720ma, show_360ma, show_180ma, show_30ma)
-    columns_to_plot = ['Close']
+    columns_to_plot = ['Date', 'Close']
     if show_average_cost:
         columns_to_plot.append('Average_Cost')
     if show_720ma:
@@ -50,8 +51,8 @@ if st.button("顯示圖表"):
     if show_30ma:
         columns_to_plot.append('20_MA')
     
-    stock_data = stock_data[columns_to_plot]
-    
+    stock_data = stock_data.reset_index()[columns_to_plot]
+
     st.write('每日均價:', stock_data['Average_Cost'].iloc[-1] if show_average_cost else 'N/A')
     st.write('最新收盤:', stock_data['Close'].iloc[-1])
     if show_30ma:
@@ -63,53 +64,47 @@ if st.button("顯示圖表"):
     if show_720ma:
         st.write('3年均價:', stock_data['720_MA'].iloc[-1])
     
-    # 用Chart.js 繪製圖表
-    chart_data = stock_data.reset_index().to_json(orient='records')
-    st.markdown(f'''
-    <canvas id="myChart"></canvas>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var chartData = {chart_data};
-        
-        var labels = chartData.map(function(e) {{
-            return e.Date;
-        }});
-        var datasets = [];
-        
-        datasets.push({{
-            label: 'Close',
-            data: chartData.map(function(e) {{
-                return e.Close;
-            }}),
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1,
-            fill: false
-        }});
-        
-        {"datasets.push({{label: 'Average Cost', data: chartData.map(function(e) {{ return e.Average_Cost; }}), borderColor: 'rgba(153, 102, 255, 1)', borderWidth: 1, fill: false}});" if show_average_cost else ""}
-        {"datasets.push({{label: '720 MA', data: chartData.map(function(e) {{ return e['720_MA']; }}), borderColor: 'rgba(255, 159, 64, 1)', borderWidth: 1, fill: false}});" if show_720ma else ""}
-        {"datasets.push({{label: '240 MA', data: chartData.map(function(e) {{ return e['240_MA']; }}), borderColor: 'rgba(255, 205, 86, 1)', borderWidth: 1, fill: false}});" if show_360ma else ""}
-        {"datasets.push({{label: '120 MA', data: chartData.map(function(e) {{ return e['120_MA']; }}), borderColor: 'rgba(201, 203, 207, 1)', borderWidth: 1, fill: false}});" if show_180ma else ""}
-        {"datasets.push({{label: '20 MA', data: chartData.map(function(e) {{ return e['20_MA']; }}), borderColor: 'rgba(54, 162, 235, 1)', borderWidth: 1, fill: false}});" if show_30ma else ""}
-        
-        var myChart = new Chart(ctx, {{
-            type: 'line',
-            data: {{
-                labels: labels,
-                datasets: datasets
-            }},
-            options: {{
-                responsive: true,
-                scales: {{
-                    x: {{
-                        beginAtZero: true
-                    }},
-                    y: {{
-                        beginAtZero: true
-                    }}
-                }}
-            }}
-        }});
-    </script>
-    ''')
+    # 用Altair繪製圖表
+    base = alt.Chart(stock_data).encode(x='Date:T')
+    
+    lines = base.mark_line().encode(
+        y=alt.Y('Close', title='收盤價'),
+        color=alt.value('blue')
+    )
+    
+    if show_average_cost:
+        average_cost_line = base.mark_line().encode(
+            y='Average_Cost',
+            color=alt.value('orange')
+        )
+        lines += average_cost_line
+    
+    if show_720ma:
+        ma720_line = base.mark_line().encode(
+            y='720_MA',
+            color=alt.value('green')
+        )
+        lines += ma720_line
+    
+    if show_360ma:
+        ma360_line = base.mark_line().encode(
+            y='240_MA',
+            color=alt.value('red')
+        )
+        lines += ma360_line
+    
+    if show_180ma:
+        ma180_line = base.mark_line().encode(
+            y='120_MA',
+            color=alt.value('purple')
+        )
+        lines += ma180_line
+    
+    if show_30ma:
+        ma30_line = base.mark_line().encode(
+            y='20_MA',
+            color=alt.value('brown')
+        )
+        lines += ma30_line
+
+    st.altair_chart(lines, use_container_width=True)
